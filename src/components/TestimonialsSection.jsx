@@ -3,6 +3,11 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FaQuoteLeft, FaStar, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
+import testimonial1 from '../assets/avatars/testimonial_1.png';
+import testimonial2 from '../assets/avatars/testimonial_2.png';
+import testimonial3 from '../assets/avatars/testimonial_3.png';
+import testimonial4 from '../assets/avatars/testimonial_4.png';
+
 gsap.registerPlugin(ScrollTrigger);
 
 const testimonials = [
@@ -10,7 +15,7 @@ const testimonials = [
     id: 1,
     name: 'Priya & Rohit Sharma',
     role: 'Wedding Clients',
-    image: 'https://randomuser.me/api/portraits/women/32.jpg',
+    image: testimonial1,
     content: 'Mahakal Studio captured our wedding with such finesse and artistry. Every image is a precious memory. The team was professional, unobtrusive, and incredibly creative. We couldn\'t have asked for better!',
     rating: 5,
   },
@@ -18,7 +23,7 @@ const testimonials = [
     id: 2,
     name: 'Anjali Mehta',
     role: 'Maternity & Newborn',
-    image: 'https://randomuser.me/api/portraits/women/44.jpg',
+    image: testimonial2,
     content: 'From my maternity shoot to my baby\'s first photoshoot, Mahakal Studio was exceptional. They made us feel so comfortable and the photos are absolutely stunning. True artists at work!',
     rating: 5,
   },
@@ -26,7 +31,7 @@ const testimonials = [
     id: 3,
     name: 'The Kapoor Family',
     role: 'Family Portrait',
-    image: 'https://randomuser.me/api/portraits/men/35.jpg',
+    image: testimonial3,
     content: 'Getting everyone together for a family photo was challenging, but the Mahakal team handled it beautifully. The portraits are elegant and timeless. Highly recommend their services!',
     rating: 5,
   },
@@ -34,7 +39,7 @@ const testimonials = [
     id: 4,
     name: 'Vikram Singh',
     role: 'Corporate Event',
-    image: 'https://randomuser.me/api/portraits/men/22.jpg',
+    image: testimonial4,
     content: 'We hired Mahakal Studio for our company\'s annual gala, and they exceeded all expectations. Professional, punctual, and the quality of work is outstanding. Will definitely book again!',
     rating: 5,
   },
@@ -138,7 +143,10 @@ const TestimonialsSection = () => {
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            What Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B6914] via-[#B8860B] to-[#D4AF37]">Clients Say</span>
+            What Our <span 
+              className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B6914] via-[#B8860B] to-[#D4AF37] text-5xl md:text-6xl lg:text-7xl"
+              style={{ fontFamily: "var(--font-cursive)" }}
+            >Clients Say</span>
           </h2>
         </div>
 

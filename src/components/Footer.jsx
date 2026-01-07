@@ -97,7 +97,7 @@ const Footer = () => {
           <div className="footer-column lg:col-span-1">
             <img src={logo} alt="Mahakal Studio" className="h-14 mb-6" />
             <p className="text-gray-400 leading-relaxed mb-6">
-              Crafting visual legacies through the art of photography. Based in Udaipur, serving clients worldwide.
+              Crafting visual legacies through the art of photography. Based in Udaipura, serving clients worldwide.
             </p>
             {/* Social Links */}
             <div className="flex gap-3">
@@ -176,7 +176,7 @@ const Footer = () => {
             <div className="space-y-4 text-gray-400">
               <p className="flex items-start gap-3">
                 <span className="text-[#B8860B]">📍</span>
-                Udaipur, Rajasthan, India
+                Udaipura, Madhya Pradesh, India
               </p>
               <p className="flex items-start gap-3">
                 <span className="text-[#B8860B]">📞</span>
@@ -201,8 +201,9 @@ const Footer = () => {
                   placeholder="Your email"
                   className="flex-1 px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:border-[#B8860B] focus:outline-none transition-colors text-sm"
                 />
-                <button className="px-4 py-2.5 bg-gradient-to-r from-[#B8860B] to-[#D4AF37] rounded-lg text-black font-semibold text-sm hover:scale-105 transition-transform">
-                  →
+                <button className="group relative overflow-hidden px-4 py-2.5 bg-gradient-to-r from-[#B8860B] to-[#D4AF37] rounded-lg text-black font-semibold text-sm transition-transform hover:scale-105">
+                  <span className="relative z-10 group-hover:text-white transition-colors duration-300">→</span>
+                  <div className="absolute inset-0 translate-y-[100%] bg-black transition-transform duration-300 group-hover:translate-y-0" />
                 </button>
               </div>
             </div>
@@ -215,7 +216,7 @@ const Footer = () => {
             {/* Copyright */}
             <p className="text-gray-500 text-sm text-center md:text-left">
               © {new Date().getFullYear()} Mahakal Studio. All rights reserved. Made with{' '}
-              <FaHeart className="inline text-[#B8860B] mx-1" /> in Udaipur
+              <FaHeart className="inline text-[#B8860B] mx-1" /> in Udaipura
             </p>
 
             {/* Back to Top */}

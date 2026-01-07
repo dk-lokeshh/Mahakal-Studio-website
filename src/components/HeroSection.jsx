@@ -24,8 +24,8 @@ const HeroSection = () => {
 
   return (
     <section id="home" className="relative h-screen w-full overflow-hidden bg-[var(--dark-primary)] text-white">
-      {/* Background Images Container - All images stacked */}
-      <div className="absolute inset-0 z-0">
+      {/* Background Images Container - All images stacked with zoom-out animation */}
+      <div className="absolute inset-0 z-0 hero-bg-animate">
         {heroImages.map((src, index) => (
           <div
             key={index}
@@ -75,8 +75,9 @@ const HeroSection = () => {
           >
             Mahakal
           </span>
+          <br />
           <span 
-            className="block text-gradient-gold mt-2 text-6xl sm:text-8xl md:text-8xl lg:text-[6rem]"
+            className="block text-gradient-gold mt-[-0.6rem] text-6xl sm:text-8xl md:text-8xl lg:text-[6rem]"
             style={{ fontFamily: "var(--font-cursive)" }}
           >
             Studio
@@ -101,7 +102,7 @@ const HeroSection = () => {
         </div>
 
         {/* Image Indicators */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-2">
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-2 hero-indicators-animate">
           {heroImages.map((_, index) => (
             <button
               key={index}
@@ -117,9 +118,9 @@ const HeroSection = () => {
         </div>
       </div>
       
-      {/* Decorative Gradient Orbs */}
-      <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-[var(--gold-primary)] opacity-[0.03] blur-3xl filter" />
-      <div className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-[var(--gold-light)] opacity-[0.03] blur-3xl filter" />
+      {/* Decorative Gradient Orbs with pulse animation */}
+      <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-[var(--gold-primary)] blur-3xl filter hero-orb-animate" />
+      <div className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-[var(--gold-light)] blur-3xl filter hero-orb-animate" style={{ animationDelay: '1s' }} />
     </section>
   );
 };

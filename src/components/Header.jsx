@@ -151,8 +151,9 @@ const Header = () => {
                 className="mt-8"
                 onClick={() => setIsOpen(false)}
               >
-                <button className="w-full bg-gradient-to-r from-[#8B6914] via-[#B8860B] to-[#D4AF37] text-black py-4 rounded-full text-lg font-semibold shadow-lg">
-                  Book Now
+                <button className="group relative overflow-hidden w-full bg-gradient-to-r from-[#8B6914] via-[#B8860B] to-[#D4AF37] text-black py-4 rounded-full text-lg font-semibold shadow-lg">
+                  <span className="relative z-10 group-hover:text-white transition-colors duration-300">Book Now</span>
+                  <div className="absolute inset-0 translate-y-[100%] bg-black transition-transform duration-300 group-hover:translate-y-0" />
                 </button>
               </motion.a>
 

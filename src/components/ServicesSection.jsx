@@ -180,7 +180,10 @@ const ServicesSection = () => {
             style={{ fontFamily: "var(--font-display)" }}
           >
             Tailored Services for
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#8B6914] via-[#B8860B] to-[#D4AF37]">
+            <span 
+              className="block text-transparent bg-clip-text bg-gradient-to-r from-[#8B6914] via-[#B8860B] to-[#D4AF37] text-5xl md:text-6xl lg:text-7xl"
+              style={{ fontFamily: "var(--font-cursive)" }}
+            >
               Every Precious Occasion
             </span>
           </h2>

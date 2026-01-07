@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import leadPhotographer from '../assets/lead-photographer.png';
+import leadPhotographer from '../assets/ashu-mosaji.jpg';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -175,7 +175,10 @@ const AboutSection = () => {
               style={{ fontFamily: "var(--font-display)" }}
             >
               The Art Behind
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#8B6914] via-[#B8860B] to-[#D4AF37]">
+              <span 
+                className="block text-transparent bg-clip-text bg-gradient-to-r from-[#8B6914] via-[#B8860B] to-[#D4AF37] text-5xl md:text-6xl lg:text-7xl"
+                style={{ fontFamily: "var(--font-cursive)" }}
+              >
                 Mahakal Studio
               </span>
             </h2>
@@ -189,7 +192,7 @@ const AboutSection = () => {
             </p>
             
             <p className="text-lg leading-relaxed mb-10 text-gray-600">
-              Based in the picturesque city of Udaipur, we extend our services globally,
+              Based in the beautiful town of Udaipura, we extend our services globally,
               ensuring every client receives a personalized journey from consultation to the
               final masterpiece. Trust us to preserve your memories with elegance and grace.
             </p>
@@ -215,9 +218,10 @@ const AboutSection = () => {
 
             {/* CTA Button */}
             <button
-              className="bg-black text-white py-4 px-10 rounded-full text-lg font-semibold hover:bg-[#B8860B] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+              className="group relative overflow-hidden bg-black text-white py-4 px-10 rounded-full text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
             >
-              Our Story
+              <span className="relative z-10 group-hover:text-black transition-colors duration-300">Our Story</span>
+              <div className="absolute inset-0 translate-y-[100%] bg-gradient-to-r from-[#B8860B] to-[#D4AF37] transition-transform duration-300 group-hover:translate-y-0" />
             </button>
           </div>
         </div>

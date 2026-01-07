@@ -105,13 +105,18 @@ const PackageCard = ({ name, description, features, highlight }) => (
       {/* CTA Button */}
       <a
         href="#contact"
-        className={`block w-full py-4 rounded-full text-center text-lg font-semibold transition-all duration-300 hover:scale-105 ${
+        className={`group relative overflow-hidden block w-full py-4 rounded-full text-center text-lg font-semibold transition-all duration-300 hover:scale-105 ${
           highlight
             ? 'bg-gradient-to-r from-[#8B6914] via-[#B8860B] to-[#D4AF37] text-black shadow-lg hover:shadow-xl'
-            : 'bg-black text-white hover:bg-[#B8860B] hover:text-black'
+            : 'bg-black text-white'
         }`}
       >
-        Inquire for Pricing
+        <span className={`relative z-10 transition-colors duration-300 ${highlight ? 'group-hover:text-white' : 'group-hover:text-black'}`}>
+          Inquire for Pricing
+        </span>
+        <div className={`absolute inset-0 translate-y-[100%] transition-transform duration-300 group-hover:translate-y-0 ${
+          highlight ? 'bg-black' : 'bg-gradient-to-r from-[#B8860B] to-[#D4AF37]'
+        }`} />
       </a>
     </div>
     
@@ -208,7 +213,10 @@ const PackagesSection = () => {
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-black"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Invest in <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B6914] via-[#B8860B] to-[#D4AF37]">Memories</span>
+            Invest in <span 
+              className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B6914] via-[#B8860B] to-[#D4AF37] text-5xl md:text-6xl lg:text-7xl"
+              style={{ fontFamily: "var(--font-cursive)" }}
+            >Memories</span>
           </h2>
           
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">

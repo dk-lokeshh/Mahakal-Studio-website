@@ -87,7 +87,10 @@ const PortfolioSection = () => {
             className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Capturing <span className="text-gradient-gold">Timeless</span> Moments
+            Capturing  <span 
+            className="text-gradient-gold mt-2 text-4xl sm:text-5xl md:text-7xl lg:text-[5.5rem]"
+            style={{ fontFamily: "var(--font-cursive)" }}
+          >Timeless</span> Moments
           </h2>
           
           {/* Subtitle */}
