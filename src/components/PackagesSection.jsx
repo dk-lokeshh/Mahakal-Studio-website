@@ -132,6 +132,8 @@ const PackagesSection = () => {
   const headerRef = useRef(null);
   const cardsRef = useRef(null);
   const noteRef = useRef(null);
+  const bgRef1 = useRef(null);
+  const bgRef2 = useRef(null);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -187,6 +189,52 @@ const PackagesSection = () => {
           }
         }
       );
+
+      // Background parallax effects
+      if (bgRef1.current) {
+        gsap.to(bgRef1.current, {
+          yPercent: -40,
+          xPercent: 15,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 2,
+          }
+        });
+      }
+
+      if (bgRef2.current) {
+        gsap.to(bgRef2.current, {
+          yPercent: -30,
+          xPercent: -20,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.5,
+          }
+        });
+      }
+
+      // Staggered parallax for cards
+      const parallaxCards = cardsRef.current?.querySelectorAll('.package-card');
+      if (parallaxCards?.length) {
+        parallaxCards.forEach((card, index) => {
+          gsap.to(card, {
+            yPercent: -5 + (index * 3),
+            ease: "none",
+            scrollTrigger: {
+              trigger: cardsRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1 + (index * 0.3),
+            }
+          });
+        });
+      }
     }, section);
 
     return () => ctx.revert();
@@ -194,10 +242,19 @@ const PackagesSection = () => {
 
   return (
     <section ref={sectionRef} id="packages" className="relative py-24 md:py-36 bg-[#FAFAFA] overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full">
-        <div className="absolute top-1/4 left-0 w-96 h-96 bg-[#B8860B]/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-[#D4AF37]/5 rounded-full blur-[120px]" />
+      {/* Background Elements with Parallax */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+        <div 
+          ref={bgRef1}
+          className="absolute top-1/4 left-0 w-96 h-96 bg-[#B8860B]/8 rounded-full blur-[120px] parallax-element floating-element" 
+        />
+        <div 
+          ref={bgRef2}
+          className="absolute bottom-1/4 right-0 w-96 h-96 bg-[#D4AF37]/8 rounded-full blur-[120px] parallax-element floating-element-delayed" 
+        />
+        {/* Additional floating particles */}
+        <div className="absolute top-1/3 right-1/4 w-3 h-3 bg-[#B8860B]/30 rounded-full floating-element" />
+        <div className="absolute bottom-1/3 left-1/3 w-2 h-2 bg-[#D4AF37]/40 rounded-full floating-element floating-element-slow" />
       </div>
       
       <div className="container mx-auto px-6 relative z-10">

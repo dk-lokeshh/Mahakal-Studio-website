@@ -136,7 +136,7 @@ const AboutSection = () => {
                 <img
                   src={leadPhotographer}
                   alt="Lead Photographer"
-                  className="w-full max-w-md mx-auto lg:mx-0 rounded-2xl shadow-2xl object-cover"
+                  className="w-full max-w-md mx-2 lg:mx-0 rounded-2xl shadow-2xl object-cover"
                 />
                 {/* Image Overlay Gradient */}
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/20 to-transparent" />

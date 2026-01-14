@@ -688,3 +688,134 @@ body {
   background: var(--gold-primary);
   color: #000;
 }
+
+/* ========================================
+   PARALLAX & HOVER EFFECT UTILITIES
+   ======================================== */
+
+/* Base parallax element - GPU accelerated */
+.parallax-element {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Parallax speed variants */
+.parallax-slow {
+  transition: transform 0.1s linear;
+}
+
+.parallax-medium {
+  transition: transform 0.05s linear;
+}
+
+.parallax-fast {
+  transition: transform 0.02s linear;
+}
+
+/* Hover float effect */
+.hover-float {
+  transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
+}
+
+.hover-float:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* 3D Tilt container */
+.tilt-container {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.tilt-element {
+  will-change: transform;
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.03, 0.98, 0.52, 0.99);
+}
+
+/* Magnetic hover effect */
+.magnetic-hover {
+  transition: transform 0.3s cubic-bezier(0.03, 0.98, 0.52, 0.99);
+}
+
+/* Parallax row animations for grids */
+.parallax-row {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Floating decorative elements */
+.floating-element {
+  will-change: transform;
+  animation: gentle-float 6s ease-in-out infinite;
+}
+
+.floating-element-delayed {
+  animation-delay: 2s;
+}
+
+.floating-element-slow {
+  animation-duration: 8s;
+}
+
+@keyframes gentle-float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-15px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(-1deg);
+  }
+  75% {
+    transform: translateY(-20px) rotate(0.5deg);
+  }
+}
+
+/* Subtle scale on hover */
+.hover-scale {
+  transition: transform var(--transition-smooth);
+}
+
+.hover-scale:hover {
+  transform: scale(1.03);
+}
+
+/* Service card parallax specific */
+.service-card-parallax {
+  will-change: transform;
+  transform-origin: center center;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.service-card-parallax:hover {
+  transform: translateY(-12px) scale(1.02);
+}
+
+/* Disable parallax on reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .parallax-element,
+  .parallax-slow,
+  .parallax-medium,
+  .parallax-fast,
+  .floating-element,
+  .tilt-element {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Mobile optimization - disable heavy effects */
+@media (max-width: 768px) {
+  .floating-element {
+    animation-duration: 10s;
+  }
+  
+  .tilt-element {
+    transform: none !important;
+  }
+}

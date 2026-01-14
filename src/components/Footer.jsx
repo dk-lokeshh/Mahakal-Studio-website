@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FaInstagram, FaFacebookF, FaYoutube, FaHeart, FaArrowUp } from 'react-icons/fa';
+import { useTransition } from '../context/TransitionContext';
 
 import logo from '../assets/Mahakal-Logo.png';
 
@@ -10,9 +11,20 @@ gsap.registerPlugin(ScrollTrigger);
 const Footer = () => {
   const footerRef = useRef(null);
   const columnsRef = useRef(null);
+  const { startTransition } = useTransition();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleNavigation = (e, href) => {
+    e.preventDefault();
+    startTransition(() => {
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: 'instant' });
+      }
+    });
   };
 
   const navLinks = [
@@ -130,7 +142,8 @@ const Footer = () => {
                 <li key={index}>
                   <a
                     href={link.href}
-                    className="text-gray-400 hover:text-[#B8860B] transition-colors duration-300 flex items-center gap-2 group"
+                    onClick={(e) => handleNavigation(e, link.href)}
+                    className="text-gray-400 hover:text-[#B8860B] transition-colors duration-300 flex items-center gap-2 group cursor-pointer"
                   >
                     <span className="w-0 h-[1px] bg-[#B8860B] group-hover:w-3 transition-all duration-300" />
                     {link.name}
@@ -154,7 +167,8 @@ const Footer = () => {
                 <li key={index}>
                   <a
                     href="#services"
-                    className="text-gray-400 hover:text-[#B8860B] transition-colors duration-300 flex items-center gap-2 group"
+                    onClick={(e) => handleNavigation(e, '#services')}
+                    className="text-gray-400 hover:text-[#B8860B] transition-colors duration-300 flex items-center gap-2 group cursor-pointer"
                   >
                     <span className="w-0 h-[1px] bg-[#B8860B] group-hover:w-3 transition-all duration-300" />
                     {service}

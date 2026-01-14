@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { useTransition } from '../context/TransitionContext';
 
 import logo from '../assets/Mahakal-Logo.png';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { startTransition } = useTransition();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,6 +18,18 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleNavigation = (e, href) => {
+    e.preventDefault();
+    if (isOpen) setIsOpen(false);
+
+    startTransition(() => {
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: 'instant' }); // Instant jump while hidden
+      }
+    });
+  };
 
   const navItems = [
     { name: 'Home', href: '#home' },
@@ -45,6 +59,7 @@ const Header = () => {
           className="flex items-center"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
+          onClick={(e) => handleNavigation(e, '#home')}
         >
           <img
             src={logo}
@@ -65,6 +80,7 @@ const Header = () => {
               <a
                 href={item.href}
                 className="relative text-white/90 hover:text-white text-[15px] font-medium tracking-wide transition-colors duration-300 group"
+                onClick={(e) => handleNavigation(e, item.href)}
               >
                 {item.name}
                 {/* Animated Underline */}
@@ -75,8 +91,7 @@ const Header = () => {
         </ul>
 
         {/* Book Now Button - Desktop */}
-        <motion.a
-          href="#contact"
+        <motion.div
           className="hidden lg:block"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -85,6 +100,7 @@ const Header = () => {
           <motion.button
             whileHover={{ scale: 1.05, boxShadow: '0 0 25px rgba(184, 134, 11, 0.4)' }}
             whileTap={{ scale: 0.95 }}
+            onClick={(e) => handleNavigation(e, '#contact')}
             className="relative overflow-hidden bg-gradient-to-r from-[#8B6914] via-[#B8860B] to-[#D4AF37] text-black py-2.5 px-7 rounded-full text-sm font-semibold shadow-lg"
           >
             <span className="relative z-10">Book Now</span>
@@ -96,7 +112,7 @@ const Header = () => {
               style={{ opacity: 0.2 }}
             />
           </motion.button>
-        </motion.a>
+        </motion.div>
 
         {/* Mobile Menu Button */}
         <motion.button
@@ -135,7 +151,7 @@ const Header = () => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1 + index * 0.05 }}
                     className="text-white/80 hover:text-[#B8860B] text-xl font-medium py-3 border-b border-white/10 transition-colors"
-                    onClick={() => setIsOpen(false)}
+                    onClick={(e) => handleNavigation(e, item.href)}
                   >
                     {item.name}
                   </motion.a>
@@ -143,19 +159,20 @@ const Header = () => {
               </div>
 
               {/* Mobile Book Now Button */}
-              <motion.a
-                href="#contact"
+              <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
                 className="mt-8"
-                onClick={() => setIsOpen(false)}
               >
-                <button className="group relative overflow-hidden w-full bg-gradient-to-r from-[#8B6914] via-[#B8860B] to-[#D4AF37] text-black py-4 rounded-full text-lg font-semibold shadow-lg">
+                <button 
+                  onClick={(e) => handleNavigation(e, '#contact')}
+                  className="group relative overflow-hidden w-full bg-gradient-to-r from-[#8B6914] via-[#B8860B] to-[#D4AF37] text-black py-4 rounded-full text-lg font-semibold shadow-lg"
+                >
                   <span className="relative z-10 group-hover:text-white transition-colors duration-300">Book Now</span>
                   <div className="absolute inset-0 translate-y-[100%] bg-black transition-transform duration-300 group-hover:translate-y-0" />
                 </button>
-              </motion.a>
+              </motion.div>
 
               {/* Social Links in Mobile Menu */}
               <div className="mt-auto mb-10">

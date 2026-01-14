@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useTransition } from '../context/TransitionContext';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 // Array of stunning Indian wedding images
 const heroImages = [
@@ -12,6 +17,13 @@ const heroImages = [
 
 const HeroSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const sectionRef = useRef(null);
+  const bgRef = useRef(null);
+  const contentRef = useRef(null);
+  const orb1Ref = useRef(null);
+  const orb2Ref = useRef(null);
+  const mousePos = useRef({ x: 0, y: 0 });
+  const rafRef = useRef(null);
 
   useEffect(() => {
     // Auto-advance images every 5 seconds
@@ -22,10 +34,126 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Parallax scroll effects
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const ctx = gsap.context(() => {
+      // Background parallax - moves slower than scroll
+      if (bgRef.current) {
+        gsap.to(bgRef.current, {
+          yPercent: 30,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1,
+          }
+        });
+      }
+
+      // Content parallax - moves slightly faster, creates depth
+      if (contentRef.current) {
+        gsap.to(contentRef.current, {
+          yPercent: -15,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "bottom top",
+            scrub: 0.5,
+          }
+        });
+      }
+
+      // Orb parallax effects
+      if (orb1Ref.current) {
+        gsap.to(orb1Ref.current, {
+          yPercent: -40,
+          xPercent: 20,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1.5,
+          }
+        });
+      }
+
+      if (orb2Ref.current) {
+        gsap.to(orb2Ref.current, {
+          yPercent: -60,
+          xPercent: -30,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "bottom top",
+            scrub: 2,
+          }
+        });
+      }
+    }, section);
+
+    return () => ctx.revert();
+  }, []);
+
+  // Mouse-following effect for orbs
+  const handleMouseMove = useCallback((e) => {
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+    }
+
+    rafRef.current = requestAnimationFrame(() => {
+      const { clientX, clientY } = e;
+      const { innerWidth, innerHeight } = window;
+      
+      // Calculate mouse position as percentage from center
+      const xPercent = (clientX - innerWidth / 2) / (innerWidth / 2);
+      const yPercent = (clientY - innerHeight / 2) / (innerHeight / 2);
+
+      // Move orbs subtly based on mouse position
+      if (orb1Ref.current) {
+        gsap.to(orb1Ref.current, {
+          x: xPercent * 30,
+          y: yPercent * 30,
+          duration: 1,
+          ease: "power2.out",
+        });
+      }
+
+      if (orb2Ref.current) {
+        gsap.to(orb2Ref.current, {
+          x: -xPercent * 40,
+          y: -yPercent * 40,
+          duration: 1.2,
+          ease: "power2.out",
+        });
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, [handleMouseMove]);
+
   return (
-    <section id="home" className="relative h-screen w-full overflow-hidden bg-[var(--dark-primary)] text-white">
-      {/* Background Images Container - All images stacked with zoom-out animation */}
-      <div className="absolute inset-0 z-0 hero-bg-animate">
+    <section 
+      ref={sectionRef}
+      id="home" 
+      className="relative h-screen w-full overflow-hidden bg-[var(--dark-primary)] text-white"
+    >
+      {/* Background Images Container - Parallax layer */}
+      <div ref={bgRef} className="absolute inset-0 z-0 hero-bg-animate parallax-element" style={{ willChange: 'transform' }}>
         {heroImages.map((src, index) => (
           <div
             key={index}
@@ -56,8 +184,12 @@ const HeroSection = () => {
         />
       </div>
 
-      {/* Content Container */}
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 text-center">
+      {/* Content Container - Faster parallax layer */}
+      <div 
+        ref={contentRef}
+        className="relative z-10 flex h-full flex-col items-center justify-center px-4 text-center parallax-element"
+        style={{ willChange: 'transform' }}
+      >
         
         {/* Animated Badge */}
         <div className="animate-fade-in-down mb-6 inline-flex items-center rounded-full border border-[var(--gold-glow)] bg-[var(--glass-bg)] px-4 py-2 backdrop-blur-md">
@@ -91,14 +223,30 @@ const HeroSection = () => {
 
         {/* CTA Buttons */}
         <div className="animate-fade-in-up flex flex-col items-center gap-4 sm:flex-row sm:gap-6 delay-200">
-          <a href="#contact" className="btn-primary group relative overflow-hidden rounded-full px-8 py-4 text-lg font-semibold tracking-wide">
+          <button 
+            onClick={() => {
+              startTransition(() => {
+                const element = document.querySelector('#contact');
+                element?.scrollIntoView({ behavior: 'instant' });
+              });
+            }}
+            className="btn-primary group relative overflow-hidden rounded-full px-8 py-4 text-lg font-semibold tracking-wide"
+          >
             <span className="relative z-10">Book Your Date</span>
             <div className="absolute inset-0 -z-0 translate-y-[100%] bg-white transition-transform duration-300 group-hover:translate-y-0" />
-          </a>
+          </button>
           
-          <a href="#portfolio" className="btn-outline group relative overflow-hidden rounded-full px-8 py-4 text-lg font-semibold tracking-wide backdrop-blur-sm hover:backdrop-blur-md">
+          <button 
+            onClick={() => {
+              startTransition(() => {
+                const element = document.querySelector('#portfolio');
+                element?.scrollIntoView({ behavior: 'instant' });
+              });
+            }}
+            className="btn-outline group relative overflow-hidden rounded-full px-8 py-4 text-lg font-semibold tracking-wide backdrop-blur-sm hover:backdrop-blur-md"
+          >
             <span className="relative z-10 group-hover:text-black">View Gallery</span>
-          </a>
+          </button>
         </div>
 
         {/* Image Indicators */}
@@ -118,9 +266,22 @@ const HeroSection = () => {
         </div>
       </div>
       
-      {/* Decorative Gradient Orbs with pulse animation */}
-      <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-[var(--gold-primary)] blur-3xl filter hero-orb-animate" />
-      <div className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-[var(--gold-light)] blur-3xl filter hero-orb-animate" style={{ animationDelay: '1s' }} />
+      {/* Decorative Gradient Orbs with mouse-following + scroll parallax */}
+      <div 
+        ref={orb1Ref}
+        className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-[var(--gold-primary)] blur-3xl filter hero-orb-animate floating-element parallax-element" 
+        style={{ willChange: 'transform' }}
+      />
+      <div 
+        ref={orb2Ref}
+        className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-[var(--gold-light)] blur-3xl filter hero-orb-animate floating-element-delayed parallax-element" 
+        style={{ animationDelay: '1s', willChange: 'transform' }} 
+      />
+      
+      {/* Additional floating particles */}
+      <div className="absolute top-1/3 left-1/6 w-2 h-2 bg-[var(--gold-light)]/50 rounded-full floating-element" />
+      <div className="absolute top-2/3 right-1/5 w-3 h-3 bg-[var(--gold-primary)]/40 rounded-full floating-element floating-element-delayed" />
+      <div className="absolute bottom-1/3 left-1/3 w-1.5 h-1.5 bg-white/30 rounded-full floating-element floating-element-slow" />
     </section>
   );
 };

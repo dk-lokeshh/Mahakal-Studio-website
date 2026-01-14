@@ -51,6 +51,9 @@ const TestimonialsSection = () => {
   const headerRef = useRef(null);
   const carouselRef = useRef(null);
   const contentRef = useRef(null);
+  const quoteRef = useRef(null);
+  const orb1Ref = useRef(null);
+  const orb2Ref = useRef(null);
 
   const nextTestimonial = () => {
     setCurrent((prev) => (prev + 1) % testimonials.length);
@@ -102,6 +105,51 @@ const TestimonialsSection = () => {
           }
         }
       );
+
+      // Quote icon parallax
+      if (quoteRef.current) {
+        gsap.to(quoteRef.current, {
+          yPercent: -50,
+          xPercent: 20,
+          rotation: 10,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 2,
+          }
+        });
+      }
+
+      // Background orbs parallax
+      if (orb1Ref.current) {
+        gsap.to(orb1Ref.current, {
+          yPercent: -35,
+          xPercent: 25,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.5,
+          }
+        });
+      }
+
+      if (orb2Ref.current) {
+        gsap.to(orb2Ref.current, {
+          yPercent: -45,
+          xPercent: -30,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 2,
+          }
+        });
+      }
     }, section);
 
     return () => ctx.revert();
@@ -119,14 +167,26 @@ const TestimonialsSection = () => {
 
   return (
     <section ref={sectionRef} id="testimonials" className="relative py-24 md:py-36 bg-gradient-to-b from-black via-[#0a0a0a] to-[#1a1a1a] overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full">
-        <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-[#B8860B]/10 rounded-full blur-[100px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#D4AF37]/10 rounded-full blur-[100px]" />
+      {/* Background Elements with Parallax */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+        <div 
+          ref={orb1Ref}
+          className="absolute top-1/4 left-1/4 w-80 h-80 bg-[#B8860B]/10 rounded-full blur-[100px] parallax-element floating-element" 
+        />
+        <div 
+          ref={orb2Ref}
+          className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#D4AF37]/10 rounded-full blur-[100px] parallax-element floating-element-delayed" 
+        />
+        {/* Floating particles */}
+        <div className="absolute top-1/3 right-1/5 w-2 h-2 bg-[#B8860B]/40 rounded-full floating-element" />
+        <div className="absolute bottom-1/3 left-1/5 w-3 h-3 bg-[#D4AF37]/30 rounded-full floating-element floating-element-slow" />
       </div>
       
-      {/* Large Quote Decoration */}
-      <div className="absolute top-20 left-10 md:left-20 text-[#B8860B]/5 pointer-events-none">
+      {/* Large Quote Decoration with Parallax */}
+      <div 
+        ref={quoteRef}
+        className="absolute top-20 left-10 md:left-20 text-[#B8860B]/5 pointer-events-none parallax-element"
+      >
         <FaQuoteLeft className="text-[200px] md:text-[300px]" />
       </div>
       

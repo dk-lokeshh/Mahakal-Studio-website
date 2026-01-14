@@ -22,38 +22,53 @@ export function PortfolioColumn({
     const column = columnRef.current;
     if (!column || images.length === 0) return;
 
-    // Get the height of one set of images
     const firstSet = column.querySelector('.image-set');
     if (!firstSet) return;
     
-    const setHeight = firstSet.offsetHeight;
-    
-    // Kill any existing animation
-    if (animationRef.current) {
-      animationRef.current.kill();
-    }
-
-    // Set initial position based on direction
-    const startY = direction === 'up' ? 0 : -setHeight;
-    const endY = direction === 'up' ? -setHeight : 0;
-    
-    gsap.set(column, { y: startY });
-
-    // Create infinite scroll animation
-    animationRef.current = gsap.to(column, {
-      y: endY,
-      duration: duration,
-      ease: 'none',
-      repeat: -1,
-      modifiers: {
-        y: gsap.utils.unitize(y => {
-          // Loop the animation seamlessly
-          return parseFloat(y) % setHeight;
-        })
+    // Function to setup/reset animation
+    const setupAnimation = () => {
+      const setHeight = firstSet.offsetHeight;
+      
+      // Kill any existing animation
+      if (animationRef.current) {
+        animationRef.current.kill();
       }
+
+      // Set initial position based on direction
+      const startY = direction === 'up' ? 0 : -setHeight;
+      const endY = direction === 'up' ? -setHeight : 0;
+      
+      // Reset position to start to ensure clean loop
+      // Note: This might cause a jump if resizing happens mid-animation, 
+      // but it's necessary for the modulo logic to work correctly with new height
+      gsap.set(column, { y: startY });
+
+      // Create infinite scroll animation
+      animationRef.current = gsap.to(column, {
+        y: endY,
+        duration: duration,
+        ease: 'none',
+        repeat: -1,
+        modifiers: {
+          y: gsap.utils.unitize(y => {
+            // Loop the animation seamlessly with correctly updated height
+            return parseFloat(y) % setHeight;
+          })
+        }
+      });
+    };
+
+    // Initial setup
+    setupAnimation();
+
+    // Observe changes in height (e.g. image loads)
+    const resizeObserver = new ResizeObserver(() => {
+      setupAnimation();
     });
 
-    // Pause on hover for better UX
+    resizeObserver.observe(firstSet);
+
+    // Filter interaction
     const handleMouseEnter = () => animationRef.current?.pause();
     const handleMouseLeave = () => animationRef.current?.play();
     
@@ -64,6 +79,7 @@ export function PortfolioColumn({
       if (animationRef.current) {
         animationRef.current.kill();
       }
+      resizeObserver.disconnect();
       column.removeEventListener('mouseenter', handleMouseEnter);
       column.removeEventListener('mouseleave', handleMouseLeave);
     };
